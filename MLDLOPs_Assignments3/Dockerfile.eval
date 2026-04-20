@@ -1,0 +1,19 @@
+FROM pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime
+
+WORKDIR /app
+
+RUN pip install --upgrade pip
+
+RUN pip install \
+    transformers==4.41.2 \
+    scikit-learn \
+    pandas \
+    numpy \
+    huggingface_hub \
+    accelerate \
+    requests
+
+# Copy full src folder
+COPY src /app/src
+
+CMD ["python", "-m", "src.eval"]

@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+*.swp
+outputs/checkpoint-*
+tmp_trainer/
+models/final_model/
