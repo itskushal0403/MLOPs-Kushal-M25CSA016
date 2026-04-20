@@ -1,0 +1,27 @@
+dataContractSpecification: 0.9.3
+id: urn:datacontract:ecommerce:orders
+version: 1.0.0
+
+info:
+  title: "Orders Contract"
+
+schema:
+  type: object
+  properties:
+    order_total:
+      type: number
+      minimum: 0
+    status:
+      type: string
+      enum: [PAID, SHIPPED, CANCELLED]
+
+quality:
+  - name: order_total_non_negative
+    type: validity
+    expression: "order_total >= 0"
+    enforcement: hard
+
+  - name: valid_status
+    type: validity
+    expression: "status IN ('PAID','SHIPPED','CANCELLED')"
+    enforcement: hard

@@ -1,0 +1,70 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# DATA CONTRACT: CityMove Ride-Share Dataset
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# NEGOTIATION SUMMARY
+# Producer: Data Engineering Team
+# Consumer: Machine Learning Team
+# ═══════════════════════════════════════════════════════════════════════════
+
+dataContractSpecification: 0.9.3
+id: urn:datacontract:citymove:rides
+version: 1.0.0
+
+info:
+  title: "CityMove Ride Data Contract"
+  description: "Ride-level data for ML pricing"
+  owner: "Data Engineering Team"
+  contact:
+    name: "Data Team"
+    email: "data@citymove.com"
+    slack: "#data"
+  classification: confidential
+  tags: [rides, ml]
+
+schema:
+  type: object
+  properties:
+    ride_id:
+      type: string
+    pickup_timestamp:
+      type: string
+    passenger_id:
+      type: integer
+      pii: true
+    driver_rating:
+      type: number
+      minimum: 1.0
+      maximum: 5.0
+    fare_amount:
+      type: number
+      minimum: 0
+    distance_meters:
+      type: integer
+  required:
+    - ride_id
+    - pickup_timestamp
+    - passenger_id
+    - driver_rating
+    - fare_amount
+    - distance_meters
+
+sla:
+  freshness:
+    threshold: "30 minutes"
+
+quality:
+  - name: fare_non_negative
+    type: validity
+    expression: "fare_amount >= 0"
+    enforcement: hard
+
+  - name: driver_rating_range
+    type: validity
+    expression: "driver_rating >= 1.0 AND driver_rating <= 5.0"
+    enforcement: hard
+
+  - name: distance_not_null
+    type: completeness
+    column: distance_meters
+    enforcement: hard

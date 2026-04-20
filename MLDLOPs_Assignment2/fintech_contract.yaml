@@ -1,0 +1,19 @@
+dataContractSpecification: 0.9.3
+id: urn:datacontract:fintech:transactions
+version: 1.0.0
+
+schema:
+  type: object
+  properties:
+    account_source_id:
+      type: string
+    account_destination_id:
+      type: string
+    transaction_timestamp:
+      type: string
+
+quality:
+  - name: account_pattern
+    type: validity
+    expression: "REGEXP_LIKE(account_source_id, '^[A-Z0-9]{10}$')"
+    enforcement: hard
